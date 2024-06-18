@@ -22,6 +22,8 @@ export const getTask = async (taskId: Task['id']): Promise<Task | null | undefin
 
     // return data;
 
+    console.log('taskId', taskId);
+
     return mockTasks[0];
 };
 
@@ -30,6 +32,8 @@ export const createTask = async (task: Omit<Task, 'id' | 'isCompleted'>) => {
     // if (error) {
     //     throw error;
     // }
+
+    console.log('task', task);
 };
 
 export const updateTask = async (taskId: Task['id'], taskData: Omit<Task, 'id' | 'isCompleted'>) => {
@@ -37,6 +41,9 @@ export const updateTask = async (taskId: Task['id'], taskData: Omit<Task, 'id' |
     // if (error) {
     //     throw error;
     // }
+
+    console.log('taskId', taskId);
+    console.log('taskData', taskData);
 };
 
 export const completeTask = async (taskId: Task['id'], isCompleted: Task['isCompleted']) => {
@@ -44,6 +51,9 @@ export const completeTask = async (taskId: Task['id'], isCompleted: Task['isComp
     // if (error) {
     //     throw error;
     // }
+
+    console.log('taskId', taskId);
+    console.log('isCompleted', isCompleted);
 };
 
 export const deleteTask = async (taskId: Task['id']) => {
@@ -51,4 +61,6 @@ export const deleteTask = async (taskId: Task['id']) => {
     // if (error) {
     //     throw error;
     // }
+
+    console.log('taskId', taskId);
 };
