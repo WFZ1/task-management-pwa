@@ -460,5 +460,19 @@
             "src": "ios/1024.png",
             "sizes": "1024x1024"
         }
+    ],
+    "screenshots": [
+        {
+            "src": "screenshots/screenshot_narrow.png",
+            "type": "image/png",
+            "sizes": "959x1089",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "screenshots/screenshot_wide.png",
+            "type": "image/png",
+            "sizes": "1921x1005",
+            "form_factor": "wide"
+        }
     ]
 }
