@@ -1,11 +1,10 @@
 import { Task } from '@/types';
 import mockTasks from '@/components/tasks/data/tasks.json';
-import { collection, getDocs } from 'firebase/firestore/lite';
+import { addDoc, collection, getDocs } from 'firebase/firestore/lite';
 import { db } from '../db';
 
 export const getTasks = async (): Promise<Task[] | null | undefined> => {
     const tasksCol = collection(db, 'tasks');
-
     const tasksSnapshot = await getDocs(tasksCol);
     const tasksList = tasksSnapshot.docs.map((doc) => doc.data());
 
@@ -27,12 +26,8 @@ export const getTask = async (taskId: Task['id']): Promise<Task | null | undefin
 };
 
 export const createTask = async (task: Omit<Task, 'id' | 'isCompleted'>) => {
-    // const { error } = await db.from('tasks').insert(task);
-    // if (error) {
-    //     throw error;
-    // }
-
-    console.log('task', task);
+    const tasksCol = collection(db, 'tasks');
+    await addDoc(tasksCol, task);
 };
 
 export const updateTask = async (taskId: Task['id'], taskData: Omit<Task, 'id' | 'isCompleted'>) => {
