@@ -1,5 +1,5 @@
 import { Task } from '@/types';
-import { addDoc, collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore/lite';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore/lite';
 import { db } from '../db';
 
 export const getTasks = async (): Promise<Task[] | null | undefined> => {
@@ -45,10 +45,6 @@ export const completeTask = async (taskId: Task['id'], isCompleted: Task['isComp
 };
 
 export const deleteTask = async (taskId: Task['id']) => {
-    // const { error } = await db.from('tasks').delete().eq('id', taskId);
-    // if (error) {
-    //     throw error;
-    // }
-
-    console.log('taskId', taskId);
+    const docRef = doc(db, 'tasks', taskId);
+    await deleteDoc(docRef);
 };
