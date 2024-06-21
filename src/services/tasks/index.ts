@@ -40,13 +40,8 @@ export const updateTask = async (taskId: Task['id'], taskData: Omit<Task, 'id' |
 };
 
 export const completeTask = async (taskId: Task['id'], isCompleted: Task['isCompleted']) => {
-    // const { error } = await db.from('tasks').update({ isCompleted }).eq('id', taskId);
-    // if (error) {
-    //     throw error;
-    // }
-
-    console.log('taskId', taskId);
-    console.log('isCompleted', isCompleted);
+    const docRef = doc(db, 'tasks', taskId);
+    await updateDoc(docRef, { isCompleted });
 };
 
 export const deleteTask = async (taskId: Task['id']) => {
