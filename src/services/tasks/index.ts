@@ -1,28 +1,32 @@
 import { Task } from '@/types';
-import mockTasks from '@/components/tasks/data/tasks.json';
-import { addDoc, collection, getDocs } from 'firebase/firestore/lite';
+import { addDoc, collection, doc, getDoc, getDocs } from 'firebase/firestore/lite';
 import { db } from '../db';
 
 export const getTasks = async (): Promise<Task[] | null | undefined> => {
     const tasksCol = collection(db, 'tasks');
     const tasksSnapshot = await getDocs(tasksCol);
-    const tasksList = tasksSnapshot.docs.map((doc) => doc.data());
+    const tasksList = tasksSnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+    }));
 
     return tasksList as Task[];
 };
 
 export const getTask = async (taskId: Task['id']): Promise<Task | null | undefined> => {
-    // const { data, error }: DBQueryResponse<Task> = await db.from('tasks').select().eq('id', taskId).single();
+    const docRef = doc(db, 'tasks', taskId);
+    const docSnap = await getDoc(docRef);
 
-    // if (error) {
-    //     throw error;
-    // }
+    if (!docSnap.exists()) {
+        throw Error();
+    }
 
-    // return data;
+    const data = {
+        ...docSnap.data(),
+        id: taskId,
+    };
 
-    console.log('taskId', taskId);
-
-    return mockTasks[0];
+    return data as Task;
 };
 
 export const createTask = async (task: Omit<Task, 'id' | 'isCompleted'>) => {
