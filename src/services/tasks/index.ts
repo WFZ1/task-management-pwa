@@ -1,16 +1,15 @@
 import { Task } from '@/types';
 import mockTasks from '@/components/tasks/data/tasks.json';
+import { collection, getDocs } from 'firebase/firestore/lite';
+import { db } from '../db';
 
 export const getTasks = async (): Promise<Task[] | null | undefined> => {
-    // const { data, error }: DBQueryResponse<Task[]> = await db.from('tasks').select();
+    const tasksCol = collection(db, 'tasks');
 
-    // if (error) {
-    //     throw error;
-    // }
+    const tasksSnapshot = await getDocs(tasksCol);
+    const tasksList = tasksSnapshot.docs.map((doc) => doc.data());
 
-    // return data;
-
-    return mockTasks;
+    return tasksList as Task[];
 };
 
 export const getTask = async (taskId: Task['id']): Promise<Task | null | undefined> => {
