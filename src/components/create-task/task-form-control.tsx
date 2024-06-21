@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { TaskForm } from '@/components/task-form/task-form';
 import { format } from 'date-fns';
-import { TaskFields } from '@/types';
+import { Task, TaskFields } from '@/types';
 import { DATE_FORMAT } from '@/constants';
 import { taskFormSchema } from '@/components/task-form/task-form-schema';
 import { createTask } from '@/services/tasks';
@@ -19,10 +19,11 @@ export const TaskFormControl = () => {
         },
     });
 
-    const handleSubmit = async (values: TaskFields) => {
+    const handleSubmit = async (values: TaskFields & Pick<Task, 'isCompleted'>) => {
         const formattedValues = {
             ...values,
             deadline: format(values.deadline, DATE_FORMAT),
+            isCompleted: false,
         };
 
         try {
