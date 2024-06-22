@@ -1,5 +1,5 @@
 import { Task } from '@/types';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore/lite';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../db';
 
 export const getTasks = async (): Promise<Task[] | null | undefined> => {
