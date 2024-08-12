@@ -9,6 +9,8 @@ interface DataTableProps<TData> {
 }
 
 export function DataTable<TData>({ table, columnsLength }: DataTableProps<TData>) {
+    const tableRows = table.getRowModel().rows;
+
     return (
         <div className="space-y-4">
             <DataTableToolbar table={table} />
@@ -30,8 +32,8 @@ export function DataTable<TData>({ table, columnsLength }: DataTableProps<TData>
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
+                        {tableRows?.length ? (
+                            tableRows.map((row) => (
                                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
