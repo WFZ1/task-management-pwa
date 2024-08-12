@@ -30,3 +30,8 @@ export const COMPLETED = [
 ];
 
 export const DATE_FORMAT = 'MMM dd, yyyy';
+
+export const SORTING_TYPE = {
+    ASC: 'asc',
+    DESC: 'desc'
+};

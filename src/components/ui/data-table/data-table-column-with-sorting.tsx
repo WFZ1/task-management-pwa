@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { SORTING_TYPE } from '@/constants';
 import { Column } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 
@@ -12,7 +13,7 @@ export const DataTableColumnWithSorting = <TData, TValue>({
     title,
 }: DataTableColumnWithSortingProps<TData, TValue>) => {
     return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === SORTING_TYPE.ASC)}>
             {title}
             <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
