@@ -1,16 +1,18 @@
 import { Task } from '@/types';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import {
+    addDoc,
+    collection,
+    CollectionReference,
+    deleteDoc,
+    doc,
+    DocumentData,
+    getDoc,
+    updateDoc,
+} from 'firebase/firestore';
 import { db } from '../db';
 
-export const getTasks = async (): Promise<Task[] | null | undefined> => {
-    const tasksCol = collection(db, 'tasks');
-    const tasksSnapshot = await getDocs(tasksCol);
-    const tasksList = tasksSnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-    }));
-
-    return tasksList as Task[];
+export const getTasksCollection = (): CollectionReference<DocumentData, DocumentData> => {
+    return collection(db, 'tasks');
 };
 
 export const getTask = async (taskId: Task['id']): Promise<Task | null | undefined> => {
@@ -30,7 +32,7 @@ export const getTask = async (taskId: Task['id']): Promise<Task | null | undefin
 };
 
 export const createTask = async (task: Omit<Task, 'id' | 'isCompleted'>) => {
-    const tasksCol = collection(db, 'tasks');
+    const tasksCol = getTasksCollection();
     await addDoc(tasksCol, task);
 };
 
