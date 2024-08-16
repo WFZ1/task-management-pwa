@@ -13,12 +13,12 @@ export const Tasks = () => {
         const q = query(getTasksCollection());
         const unsubscribe = onSnapshot(
             q,
-            (querySnapshot) => {
+            (snapshot) => {
                 setIsLoading(true);
                 setError(null);
 
                 try {
-                    const todos = querySnapshot.docs.map((doc) => ({
+                    const todos = snapshot.docs.map((doc) => ({
                         ...(doc.data() as Omit<ITask, 'id'>),
                         id: doc.id,
                     }));
