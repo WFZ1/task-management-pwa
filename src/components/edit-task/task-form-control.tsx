@@ -5,10 +5,11 @@ import { format } from 'date-fns';
 import { Task, TaskFields } from '@/types';
 import { DATE_FORMAT } from '@/constants';
 import { taskFormSchema } from '@/components/task-form/task-form-schema';
-import { getTasksCollection, updateTask } from '@/services/tasks';
+import { updateTask } from '@/services/tasks';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
-import { onSnapshot, query } from 'firebase/firestore';
+import { useCallback, useRef } from 'react';
+import { QuerySnapshot } from 'firebase/firestore';
+import { useTasksSnapshot } from '@/hooks/useTasksSnapshot';
 
 interface TaskFormControlProps {
     task: Task;
@@ -16,39 +17,28 @@ interface TaskFormControlProps {
 
 export const TaskFormControl = ({ task }: TaskFormControlProps) => {
     const isFormSubmitted = useRef(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const q = query(getTasksCollection());
-        const unsubscribe = onSnapshot(
-            q,
-            (snapshot) => {
-                setIsLoading(true);
-                setError(null);
+    const handleTasksSnapshot = useCallback(
+        (snapshot: QuerySnapshot) => {
+            const docChanges = snapshot.docChanges();
+            const isTaskCreated = docChanges.length && docChanges[0].type === 'modified';
 
-                const docChanges = snapshot.docChanges();
-                const isTaskCreated = docChanges.length && docChanges[0].type === 'modified';
-
-                if (isTaskCreated && isFormSubmitted.current) {
-                    navigate('/tasks');
-                }
-
-                setIsLoading(false);
-                isFormSubmitted.current = false;
-            },
-            (error) => {
-                setError('Failed navigate to tasks page. Please try again later.');
-                console.error('Firestore error: ', error);
-
-                setIsLoading(false);
-                isFormSubmitted.current = false;
+            if (isTaskCreated && isFormSubmitted.current) {
+                navigate('/tasks');
             }
-        );
 
-        return () => unsubscribe();
-    }, [navigate]);
+            isFormSubmitted.current = false;
+        },
+        [navigate]
+    );
+
+    const handleTasksSnapshotError = useCallback(() => (isFormSubmitted.current = false), []);
+
+    const { isLoading, error } = useTasksSnapshot({
+        onNext: handleTasksSnapshot,
+        onError: handleTasksSnapshotError,
+    });
 
     const form = useForm<TaskFields>({
         resolver: zodResolver(taskFormSchema),
@@ -76,7 +66,7 @@ export const TaskFormControl = ({ task }: TaskFormControlProps) => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div>Updating task...</div>;
     }
 
     if (error) {

@@ -1,40 +1,24 @@
 import { TasksTable } from '@/components/tasks-table/tasks-table';
-import { getTasksCollection } from '@/services/tasks';
+import { useTasksSnapshot } from '@/hooks/useTasksSnapshot';
 import { Task as ITask } from '@/types';
-import { onSnapshot, query } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { QuerySnapshot } from 'firebase/firestore';
+import { useCallback, useState } from 'react';
 
 export const Tasks = () => {
     const [tasks, setTasks] = useState<ITask[] | null | undefined>();
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const q = query(getTasksCollection());
-        const unsubscribe = onSnapshot(
-            q,
-            (snapshot) => {
-                setIsLoading(true);
-                setError(null);
+    const handleTasksSnapshot = useCallback((snapshot: QuerySnapshot) => {
+        const todos = snapshot.docs.map((doc) => ({
+            ...(doc.data() as Omit<ITask, 'id'>),
+            id: doc.id,
+        }));
 
-                const todos = snapshot.docs.map((doc) => ({
-                    ...(doc.data() as Omit<ITask, 'id'>),
-                    id: doc.id,
-                }));
-
-                setTasks(todos);
-                setIsLoading(false);
-            },
-            (error) => {
-                setError('Failed to fetch tasks. Please try again later.');
-                console.error('Firestore error: ', error);
-
-                setIsLoading(false);
-            }
-        );
-
-        return () => unsubscribe();
+        setTasks(todos);
     }, []);
+
+    const { isLoading, error } = useTasksSnapshot({
+        onNext: handleTasksSnapshot,
+    });
 
     if (isLoading) {
         return <div>Loading tasks...</div>;

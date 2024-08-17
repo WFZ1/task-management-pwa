@@ -1,58 +1,45 @@
-import { getTasksCollection } from '@/services/tasks';
 import { TaskFormControl } from './task-form-control';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Task as ITask } from '@/types';
-import { onSnapshot, query } from 'firebase/firestore';
+import { QuerySnapshot } from 'firebase/firestore';
+import { useTasksSnapshot } from '@/hooks/useTasksSnapshot';
 
 interface TaskProps {
     id: string | null;
 }
 
 export const Task = ({ id }: TaskProps) => {
-    const [task, setTask] = useState<ITask | null | undefined>();
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [task, setTask] = useState<ITask | null | undefined>(null);
 
-    useEffect(() => {
-        const q = query(getTasksCollection());
-        const unsubscribe = onSnapshot(
-            q,
-            (snapshot) => {
-                setIsLoading(true);
-                setError(null);
+    const handleTasksSnapshot = useCallback(
+        (snapshot: QuerySnapshot) => {
+            const doc = snapshot.docs.find((doc) => doc.id === id);
 
-                const doc = snapshot.docs.find((doc) => doc.id === id);
-
-                if (!doc) {
-                    setTask(undefined);
-                    return;
-                }
-
-                const todo = {
-                    ...(doc.data() as Omit<ITask, 'id'>),
-                    id: doc.id,
-                };
-
-                setTask(todo);
-                setIsLoading(false);
-            },
-            (error) => {
-                setError('Failed to fetch task. Please try again later.');
-                console.error('Firestore error: ', error);
-
-                setIsLoading(false);
+            if (!doc) {
+                setTask(undefined);
+                return;
             }
-        );
 
-        return () => unsubscribe();
-    }, [id]);
+            const todo = {
+                ...(doc.data() as Omit<ITask, 'id'>),
+                id: doc.id,
+            };
+
+            setTask(todo);
+        },
+        [id]
+    );
+
+    const { isLoading, error } = useTasksSnapshot({
+        onNext: handleTasksSnapshot,
+    });
 
     if (!id) {
         return <div>Task id was not provided</div>;
     }
 
-    if (isLoading) {
-        return <div>Loading tasks...</div>;
+    if (isLoading || task === null) {
+        return <div>Loading task...</div>;
     }
 
     if (!task) {
