@@ -1,17 +1,8 @@
 import { Task } from '@/types';
-import {
-    addDoc,
-    collection,
-    CollectionReference,
-    deleteDoc,
-    doc,
-    DocumentData,
-    getDoc,
-    updateDoc,
-} from 'firebase/firestore';
+import { addDoc, collection, CollectionReference, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../db';
 
-export const getTasksCollection = (): CollectionReference<DocumentData, DocumentData> => {
+export const getTasksCollection = (): CollectionReference => {
     return collection(db, 'tasks');
 };
 

@@ -32,12 +32,14 @@ export const TaskFormControl = () => {
                 }
 
                 setIsLoading(false);
+                isFormSubmitted.current = false;
             },
             (error) => {
                 setError('Failed navigate to tasks page. Please try again later.');
                 console.error('Firestore error: ', error);
 
                 setIsLoading(false);
+                isFormSubmitted.current = false;
             }
         );
 
@@ -69,7 +71,7 @@ export const TaskFormControl = () => {
     };
 
     if (isLoading) {
-        return <div>Loading task...</div>;
+        return <div>Loading...</div>;
     }
 
     if (error) {

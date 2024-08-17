@@ -17,19 +17,13 @@ export const Tasks = () => {
                 setIsLoading(true);
                 setError(null);
 
-                try {
-                    const todos = snapshot.docs.map((doc) => ({
-                        ...(doc.data() as Omit<ITask, 'id'>),
-                        id: doc.id,
-                    }));
+                const todos = snapshot.docs.map((doc) => ({
+                    ...(doc.data() as Omit<ITask, 'id'>),
+                    id: doc.id,
+                }));
 
-                    setTasks(todos);
-                } catch (e) {
-                    setError(e instanceof Error ? e.message : 'An unknown error occurred');
-                    console.error('Error fetching tasks: ', e);
-                } finally {
-                    setIsLoading(false);
-                }
+                setTasks(todos);
+                setIsLoading(false);
             },
             (error) => {
                 setError('Failed to fetch tasks. Please try again later.');
