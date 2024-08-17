@@ -1,25 +1,9 @@
 import { Task } from '@/types';
-import { addDoc, collection, CollectionReference, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, CollectionReference, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../db';
 
 export const getTasksCollection = (): CollectionReference => {
     return collection(db, 'tasks');
-};
-
-export const getTask = async (taskId: Task['id']): Promise<Task | null | undefined> => {
-    const docRef = doc(db, 'tasks', taskId);
-    const docSnap = await getDoc(docRef);
-
-    if (!docSnap.exists()) {
-        throw Error();
-    }
-
-    const data = {
-        ...docSnap.data(),
-        id: taskId,
-    };
-
-    return data as Task;
 };
 
 export const createTask = async (task: Omit<Task, 'id' | 'isCompleted'>) => {
