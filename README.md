@@ -6,7 +6,7 @@
 -   Sorting tasks based on priority or status.
 -   shadcn/ui is used as component library.
 -   tailwind is used as CSS framework.
--   Firestore database stores and handles task data.
+-   Firestore database stores and handles tasks data.
 -   PWA with basic features like offline mode and on-device installation.
 -   The application is deployed on Firebase Hosting.
 -   Full CI/CD using Github Actions.
