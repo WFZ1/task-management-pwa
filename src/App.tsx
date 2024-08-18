@@ -7,11 +7,9 @@ import UpdateTaskPage from './routes/update-task.tsx';
 
 const router = createBrowserRouter([
     {
-        errorElement: <ErrorPage />,
-    },
-    {
         path: '/',
         element: <HomePage />,
+        errorElement: <ErrorPage />,
     },
     {
         path: '/create-task',
