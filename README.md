@@ -1,30 +1,22 @@
-# React + TypeScript + Vite
+**Progressive Web App** (PWA) for task management with the possibility of offline mode and installation on the device.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+-   Tasks have a name, description, deadline, priority and status (completed/not completed).
+-   The user can create, view, edit, mark as completed and delete tasks.
+-   PWA with basic features like offline mode and on-device installation.
+-   The application is deployed on Firebase Hosting.
+-   Full CI/CD using Github Actions.
 
-Currently, two official plugins are available:
+## Hosting
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Firebase: task-management-27b61.web.app/
 
-## Expanding the ESLint configuration
+## Run app
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. install dependencies `npm i`
+2. run `npm dev`
 
-- Configure the top-level `parserOptions` property like this:
+## Run app with PWA
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. install dependencies `npm i`
+2. run `npm build`
+3. run `npm preview`
