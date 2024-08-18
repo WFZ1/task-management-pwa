@@ -8,7 +8,7 @@
 
 ## Hosting
 
-Firebase: task-management-27b61.web.app/
+Firebase: https://task-management-27b61.web.app/
 
 ## Run app
 
