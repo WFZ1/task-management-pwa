@@ -25,3 +25,11 @@ Firebase: https://task-management-27b61.web.app/
 1. install dependencies `npm i`
 2. run `npm build`
 3. run `npm preview`
+
+## Manually Deployment to Firebase
+
+To deploy, run the following command from the root of project directory:
+
+```
+firebase deploy
+```
