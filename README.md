@@ -31,5 +31,5 @@ Firebase: https://task-management-27b61.web.app/
 To deploy, run the following command from the root of project directory:
 
 ```
-firebase deploy
+npm run deploy
 ```
